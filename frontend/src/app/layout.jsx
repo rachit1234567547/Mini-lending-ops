@@ -1,5 +1,6 @@
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
+import { ThemeProvider } from '@/context/ThemeContext';
 
 export const metadata = {
   title: 'Mini Lending Ops — Admin Panel',
@@ -8,9 +9,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head />
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
