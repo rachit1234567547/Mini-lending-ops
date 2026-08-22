@@ -1,4 +1,7 @@
 require('dotenv').config();
+const dns = require('dns');
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+
 const mongoose = require('mongoose');
 const { Admin, Borrower, Loan, ActivityLog, Repayment, PTP } = require('./models');
 
