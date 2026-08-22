@@ -225,26 +225,24 @@ The following checklist represents the complete testing journey required to vali
 - [x] I1: Logout and Login again. Session persistence functions normally.
 - [x] I2: Refresh the loan detail page. The data remains consistent with the MongoDB records.
 - [x] I3: Confirm that the `.env` file is excluded from version control, the `.env.example` exists, and there are no exposed secrets in the Git history.
-- [x] I4: Clone the repository into a fresh directory, follow these instructions, seed the data, and start the application. The entire setup process takes less than 15 minutes.
-
----
+- [x] I4: Clone the repository into a fresh directory, follow these instructions, seed the data, and start the application.
 
 ## Screenshots
 
-1. IFSC Successful Verification
-   ![IFSC Success](https://github.com/user-attachments/assets/e245e0ad-2263-4dca-82a9-aff8b29b11e6)
+1. **IFSC Successful Verification**<br>
+   <img src="https://github.com/user-attachments/assets/e245e0ad-2263-4dca-82a9-aff8b29b11e6" width="800" alt="IFSC Success" />
 
-2. IFSC Failure
-   ![IFSC Failure](https://github.com/user-attachments/assets/3a3b8ebc-6dc7-4df0-aa60-cd29644ddadf)
+2. **IFSC Failure**<br>
+   <img src="https://github.com/user-attachments/assets/3a3b8ebc-6dc7-4df0-aa60-cd29644ddadf" width="800" alt="IFSC Failure" />
 
-3. Decision Email
-   ![Decision Email](https://github.com/user-attachments/assets/e7bbec61-65c4-4773-8ff0-22ef14a79612) 
+3. **Decision Email**<br>
+   <img src="https://github.com/user-attachments/assets/e7bbec61-65c4-4773-8ff0-22ef14a79612" width="400" alt="Decision Email" />
 
-4. Performance Report
-   ![Performance Report](https://github.com/user-attachments/assets/1824479c-392c-4e03-817c-86d4432d4fd9)
+4. **Performance Report**<br>
+   <img src="https://github.com/user-attachments/assets/1824479c-392c-4e03-817c-86d4432d4fd9" width="800" alt="Performance Report" />
 
-5. Recovery Report
-   ![Recovery Report](https://github.com/user-attachments/assets/fbd22e00-38d1-4699-b3d1-8849e1cdc5f7)
+5. **Recovery Report**<br>
+   <img src="https://github.com/user-attachments/assets/fbd22e00-38d1-4699-b3d1-8849e1cdc5f7" width="800" alt="Recovery Report" />
 
 ---
 
