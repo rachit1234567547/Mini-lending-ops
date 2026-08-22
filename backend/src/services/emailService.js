@@ -9,8 +9,8 @@ try {
     transporter = nodemailer.createTransport({
       service: 'gmail', // Standard Gmail setup
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.EMAIL_USER.trim(),
+        pass: process.env.EMAIL_PASS.replace(/\s+/g, ''),
       },
     });
     console.log('[EMAIL] Nodemailer transporter configured for Gmail.');
@@ -132,16 +132,16 @@ const sendDecisionEmail = async ({ borrowerEmail, borrowerName, loanAmount, stat
     return { sent: false };
   }
 
-  const subject =
-    status === 'approved'
-      ? '✅ Your loan has been approved — Mini Lending Ops'
-      : '❌ Update on your loan application — Mini Lending Ops';
-
   try {
     const info = await transporter.sendMail({
       from: `"Mini Lending Ops" <${process.env.EMAIL_USER}>`,
       to: borrowerEmail,
-      subject,
+      subject:
+        status === 'approved'
+          ? '✅ Your loan has been approved — Mini Lending Ops'
+          : status === 'disbursed'
+          ? '💸 Your loan has been disbursed! — Mini Lending Ops'
+          : '❌ Update on your loan application — Mini Lending Ops',
       html: buildEmailHTML({ borrowerName, loanAmount, status, comment }),
     });
 

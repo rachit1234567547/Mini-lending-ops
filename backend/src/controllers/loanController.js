@@ -228,7 +228,18 @@ const disburseLoan = async (req, res) => {
       meta: {},
     });
 
-    return res.json({ success: true, loan });
+    // Send email asynchronously in the background so it doesn't block the HTTP response
+    sendDecisionEmail({
+      borrowerEmail: loan.borrowerId.email,
+      borrowerName: loan.borrowerId.name,
+      loanAmount: loan.amount,
+      status: 'disbursed',
+      comment: '',
+    }).catch(emailErr => {
+      console.error('[EMAIL] Background sending failed:', emailErr.message);
+    });
+
+    return res.json({ success: true, emailSent: 'pending_background', loan });
   } catch (err) {
     console.error('[LOANS] disburseLoan error:', err.message);
     return res.status(500).json({ error: 'Failed to disburse loan.' });
