@@ -234,7 +234,7 @@ const disburseLoan = async (req, res) => {
       borrowerName: loan.borrowerId.name,
       loanAmount: loan.amount,
       status: 'disbursed',
-      comment: '',
+      comment: loan.decisionComment || '',
     }).catch(emailErr => {
       console.error('[EMAIL] Background sending failed:', emailErr.message);
     });

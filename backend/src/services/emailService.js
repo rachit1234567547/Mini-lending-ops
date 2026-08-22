@@ -25,8 +25,8 @@ try {
  * Build an HTML email body for loan decisions.
  */
 const buildEmailHTML = ({ borrowerName, loanAmount, status, comment }) => {
-  const statusColor = status === 'approved' ? '#16a34a' : '#dc2626';
-  const statusLabel = status === 'approved' ? '✅ Approved' : '❌ Rejected';
+  const statusColor = status === 'approved' ? '#16a34a' : status === 'disbursed' ? '#0284c7' : '#dc2626';
+  const statusLabel = status === 'approved' ? '✅ Approved' : status === 'disbursed' ? '💸 Disbursed' : '❌ Rejected';
   const formattedAmount = new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
@@ -52,7 +52,7 @@ const buildEmailHTML = ({ borrowerName, loanAmount, status, comment }) => {
                     <h1 style="color:#ffffff;margin:0;font-size:22px;font-weight:700;letter-spacing:0.5px;">
                       Mini Lending Ops
                     </h1>
-                    <p style="color:#94a3b8;margin:6px 0 0;font-size:13px;">Loan Decision Notification</p>
+                    <p style="color:#94a3b8;margin:6px 0 0;font-size:13px;">Loan Update Notification</p>
                   </td>
                 </tr>
                 <!-- Body -->
@@ -62,7 +62,7 @@ const buildEmailHTML = ({ borrowerName, loanAmount, status, comment }) => {
                       Dear <strong>${borrowerName}</strong>,
                     </p>
                     <p style="color:#374151;font-size:15px;margin:0 0 28px;">
-                      We have reviewed your loan application. Here are the details:
+                      We have an update regarding your loan. Here are the details:
                     </p>
                     <!-- Decision Card -->
                     <table width="100%" cellpadding="0" cellspacing="0"
@@ -75,7 +75,7 @@ const buildEmailHTML = ({ borrowerName, loanAmount, status, comment }) => {
                               <td align="right" style="padding:8px 0;color:#1e293b;font-size:14px;font-weight:600;">${formattedAmount}</td>
                             </tr>
                             <tr>
-                              <td style="padding:8px 0;color:#64748b;font-size:14px;border-top:1px solid #e2e8f0;">Decision Status</td>
+                              <td style="padding:8px 0;color:#64748b;font-size:14px;border-top:1px solid #e2e8f0;">Status</td>
                               <td align="right" style="padding:8px 0;border-top:1px solid #e2e8f0;">
                                 <span style="background:${statusColor}18;color:${statusColor};padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600;">
                                   ${statusLabel}
@@ -95,6 +95,11 @@ const buildEmailHTML = ({ borrowerName, loanAmount, status, comment }) => {
                       ? `<p style="color:#374151;font-size:14px;margin:0 0 20px;">
                           Congratulations! Your loan has been approved. Our team will be in touch 
                           with the next steps for disbursement.
+                         </p>`
+                      : status === 'disbursed'
+                      ? `<p style="color:#374151;font-size:14px;margin:0 0 20px;">
+                          Great news! Your loan amount has been successfully disbursed to your verified bank account. 
+                          Please check your account for the transferred funds.
                          </p>`
                       : `<p style="color:#374151;font-size:14px;margin:0 0 20px;">
                           We regret to inform you that your loan application has been rejected. 
