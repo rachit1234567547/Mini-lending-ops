@@ -238,7 +238,7 @@ The following checklist represents the complete testing journey required to vali
    ![IFSC Failure](https://github.com/user-attachments/assets/3a3b8ebc-6dc7-4df0-aa60-cd29644ddadf)
 
 3. Decision Email
-   ![Decision Email](https://github.com/user-attachments/assets/e7bbec61-65c4-4773-8ff0-22ef14a79612)
+   ![Decision Email](https://github.com/user-attachments/assets/e7bbec61-65c4-4773-8ff0-22ef14a79612) 
 
 4. Performance Report
    ![Performance Report](https://github.com/user-attachments/assets/1824479c-392c-4e03-817c-86d4432d4fd9)
