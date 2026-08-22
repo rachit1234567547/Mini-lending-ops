@@ -234,19 +234,24 @@ The following checklist represents the complete testing journey required to vali
 (Please add your screenshots to the repository and update these markdown links before final submission.)
 
 1. IFSC Successful Verification
-   ![IFSC Success](./screenshots/ifsc-success.png)
+   ![IFSC Success](<img width="1919" height="972" alt="Screenshot 2026-08-22 160219" src="https://github.com/user-attachments/assets/e245e0ad-2263-4dca-82a9-aff8b29b11e6" />
+)
 
 2. IFSC Failure
-   ![IFSC Failure](./screenshots/ifsc-failure.png)
+   ![IFSC Failure](<img width="1919" height="965" alt="Screenshot 2026-08-22 160130" src="https://github.com/user-attachments/assets/3a3b8ebc-6dc7-4df0-aa60-cd29644ddadf" />
+)
 
 3. Decision Email
-   ![Decision Email](./screenshots/decision-email.png)
+   ![Decision Email](<img width="739" height="1600" alt="WhatsApp Image 2026-08-22 at 4 04 20 PM" src="https://github.com/user-attachments/assets/e7bbec61-65c4-4773-8ff0-22ef14a79612" />
+)
 
 4. Performance Report
-   ![Performance Report](./screenshots/performance-report.png)
+   ![Performance Report](<img width="1919" height="933" alt="Screenshot 2026-08-22 160428" src="https://github.com/user-attachments/assets/1824479c-392c-4e03-817c-86d4432d4fd9" />
+)
 
 5. Recovery Report
-   ![Recovery Report](./screenshots/recovery-report.png)
+   ![Recovery Report](<img width="1919" height="965" alt="Screenshot 2026-08-22 160435" src="https://github.com/user-attachments/assets/fbd22e00-38d1-4699-b3d1-8849e1cdc5f7" />
+)
 
 ---
 
