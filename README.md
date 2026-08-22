@@ -1,6 +1,6 @@
 # Mini Lending Operations Admin Panel
 
-This repository contains a fully functional administrative panel designed for lending operations. It is built using a modern technology stack including Node.js, Express, MongoDB for the backend, and React (Vite) with JWT-based authentication for the frontend.
+This repository contains a fully functional administrative panel designed for lending operations. It is built using a modern technology stack including Node.js, Express, MongoDB for the backend, and Next.js with JWT-based authentication for the frontend.
 
 Please note that this is a training project. No real financial services (such as CIBIL, Cashfree, or DigiLocker) have been integrated into this application.
 
@@ -20,9 +20,9 @@ mini-lending-ops/
 │       ├── controllers/
 │       ├── services/
 │       └── server.js
-├── frontend/        # React Application (built with Vite)
+├── frontend/        # Next.js Application
 │   └── src/
-│       ├── pages/
+│       ├── app/
 │       ├── components/
 │       ├── context/
 │       └── services/
