@@ -29,12 +29,11 @@ export function ThemeProvider({ children }) {
     document.documentElement.setAttribute('data-theme', next);
   };
 
-  // Prevent hydration mismatch by not rendering until mounted
-  if (!mounted) return <div style={{ visibility: 'hidden' }}>{children}</div>;
-
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
+      <div style={{ visibility: mounted ? 'visible' : 'hidden', display: 'contents' }}>
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 }
