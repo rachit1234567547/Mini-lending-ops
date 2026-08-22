@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Sidebar from '@/components/Sidebar';
 import api from '@/services/api';
+import { BarChart2, Info } from 'lucide-react';
 
 const fmt = (n) => new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(n);
 
@@ -36,11 +37,11 @@ export default function PerformanceReportPage() {
       <div className="main-content">
         <div className="page">
           <div className="page-header">
-            <h2>📊 Decision Performance</h2>
+            <h2 style={{ display: 'flex', alignItems: 'center', gap: 8 }}><BarChart2 size={24} /> Decision Performance</h2>
             <p>Unique loan decisions made by each admin</p>
           </div>
 
-          <div className="kpi-box">ℹ️ {explanation}</div>
+          <div className="kpi-box" style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Info size={18} /> {explanation}</div>
           {error && <div className="alert alert-error">{error}</div>}
 
           <div className="stat-grid">
@@ -50,7 +51,7 @@ export default function PerformanceReportPage() {
             <div className="stat-card"><div className="stat-label">Active Admins</div><div className="stat-value" style={{color:'var(--purple)'}}>{report.length}</div><div className="stat-sub">with decisions</div></div>
           </div>
 
-          {report.length===0 ? <div className="empty-state"><div className="empty-icon">📊</div>No decisions recorded yet.</div> : (
+          {report.length===0 ? <div className="empty-state"><div className="empty-icon"><BarChart2 size={48} className="text-muted" /></div>No decisions recorded yet.</div> : (
             <div className="table-wrap">
               <table>
                 <thead><tr><th>Admin</th><th>Approved</th><th>Rejected</th><th>Total</th><th>Approval Rate</th></tr></thead>

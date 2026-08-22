@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Sidebar from '@/components/Sidebar';
 import api from '@/services/api';
+import { CheckCircle, Search, Check, X, Pause, Send, CreditCard, Calendar } from 'lucide-react';
 
 const fmt = (n) => new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(n);
 const fmtDT = (d) => d ? new Date(d).toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
@@ -130,13 +131,13 @@ function IFSCForm({ borrower, onUpdated }) {
         </div>
       )}
       {error  && <div className="alert alert-error">{error}</div>}
-      {result && <div className="ifsc-result" style={{marginBottom:16}}><div className="bank-name">✅ {result.bankName}</div><div className="bank-detail">Branch: {result.branch} · City: {result.city}</div><div className="bank-detail">IFSC: {result.ifsc} · Acc ····{result.accountLast4}</div></div>}
+      {result && <div className="ifsc-result" style={{marginBottom:16}}><div className="bank-name" style={{display:'flex',alignItems:'center',gap:6}}><CheckCircle size={16} className="text-success" /> {result.bankName}</div><div className="bank-detail">Branch: {result.branch} · City: {result.city}</div><div className="bank-detail">IFSC: {result.ifsc} · Acc ····{result.accountLast4}</div></div>}
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
         <div className="form-group" style={{marginBottom:0}}><label className="form-label">IFSC Code</label><input id="ifsc-input" className="form-control" placeholder="HDFC0000001" value={form.ifsc} onChange={(e)=>setForm({...form,ifsc:e.target.value.toUpperCase()})} /></div>
         <div className="form-group" style={{marginBottom:0}}><label className="form-label">Account Last 4</label><input id="account-last4" className="form-control" placeholder="1234" maxLength={4} value={form.accountLast4} onChange={(e)=>setForm({...form,accountLast4:e.target.value.replace(/\D/g,'')})} /></div>
       </div>
       <button id="ifsc-verify-btn" className="btn btn-primary" style={{marginTop:12}} onClick={handleVerify} disabled={loading}>
-        {loading?<><span className="spinner"/> Verifying…</>:'🔍 Verify IFSC'}
+        {loading?<><span className="spinner"/> Verifying…</>:<><Search size={16} style={{marginRight:6}} /> Verify IFSC</>}
       </button>
     </div>
   );
@@ -237,23 +238,23 @@ export default function LoanDetailPage() {
               <div className="action-group">
                 {canDecide && isDecidable && <>
                   <button id="btn-approve" className="btn btn-success" disabled={actionBusy.approve} onClick={()=>setModal('approve')}>
-                    {actionBusy.approve?<><span className="spinner"/> Approving…</>:'✅ Approve'}
+                    {actionBusy.approve?<><span className="spinner"/> Approving…</>:<><Check size={16} style={{marginRight:6}} /> Approve</>}
                   </button>
                   <button id="btn-reject" className="btn btn-danger" disabled={actionBusy.reject} onClick={()=>setModal('reject')}>
-                    {actionBusy.reject?<><span className="spinner"/> Rejecting…</>:'❌ Reject'}
+                    {actionBusy.reject?<><span className="spinner"/> Rejecting…</>:<><X size={16} style={{marginRight:6}} /> Reject</>}
                   </button>
                   {loan.status==='pending'&&<button id="btn-hold" className="btn btn-warning" disabled={actionBusy.hold} onClick={()=>setModal('hold')}>
-                    {actionBusy.hold?<><span className="spinner"/> Holding…</>:'⏸ Hold'}
+                    {actionBusy.hold?<><span className="spinner"/> Holding…</>:<><Pause size={16} style={{marginRight:6}} /> Hold</>}
                   </button>}
                 </>}
                 {canDecide && isDisbursable && (
                   <button id="btn-disburse" className="btn btn-primary" disabled={actionBusy.disburse}
                     onClick={async()=>{setActionBusy(p=>({...p,disburse:true}));try{await doAction('disburse');}catch(e){alert(e.response?.data?.error||'Failed');}finally{setActionBusy(p=>({...p,disburse:false}));}}}>
-                    {actionBusy.disburse?<><span className="spinner"/> Disbursing…</>:'💸 Disburse'}
+                    {actionBusy.disburse?<><span className="spinner"/> Disbursing…</>:<><Send size={16} style={{marginRight:6}} /> Disburse</>}
                   </button>
                 )}
-                {canRepay && isActive && <button id="btn-repayment" className="btn btn-ghost" onClick={()=>setModal('repayment')}>💳 Record Repayment</button>}
-                {canPTP   && isActive && <button id="btn-ptp"       className="btn btn-ghost" onClick={()=>setModal('ptp')}>📅 Create PTP</button>}
+                {canRepay && isActive && <button id="btn-repayment" className="btn btn-ghost" onClick={()=>setModal('repayment')} style={{display:'flex',alignItems:'center',gap:6}}><CreditCard size={16} /> Record Repayment</button>}
+                {canPTP   && isActive && <button id="btn-ptp"       className="btn btn-ghost" onClick={()=>setModal('ptp')} style={{display:'flex',alignItems:'center',gap:6}}><Calendar size={16} /> Create PTP</button>}
               </div>
             </>}
           </div>

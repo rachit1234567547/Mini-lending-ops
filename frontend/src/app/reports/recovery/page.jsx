@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Sidebar from '@/components/Sidebar';
 import api from '@/services/api';
+import { CircleDollarSign, Info } from 'lucide-react';
 
 const fmt = (n) => new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(n);
 
@@ -38,11 +39,11 @@ export default function RecoveryReportPage() {
       <div className="main-content">
         <div className="page">
           <div className="page-header">
-            <h2>💰 Recovery Report</h2>
+            <h2 style={{ display: 'flex', alignItems: 'center', gap: 8 }}><CircleDollarSign size={24} /> Recovery Report</h2>
             <p>Loans in the disbursed / recovery lifecycle, grouped by approving admin</p>
           </div>
 
-          <div className="kpi-box">ℹ️ {explanation}</div>
+          <div className="kpi-box" style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Info size={18} /> {explanation}</div>
           {error && <div className="alert alert-error">{error}</div>}
 
           <div className="stat-grid">
@@ -52,7 +53,7 @@ export default function RecoveryReportPage() {
             <div className="stat-card"><div className="stat-label">Recovery Rate</div><div className="stat-value" style={{color:overallRate>=70?'var(--green)':overallRate>=40?'var(--yellow)':'var(--red)'}}>{overallRate}%</div><div className="stat-sub">overall portfolio</div></div>
           </div>
 
-          {report.length===0 ? <div className="empty-state"><div className="empty-icon">💰</div>No recovery loans yet.</div> : (
+          {report.length===0 ? <div className="empty-state"><div className="empty-icon"><CircleDollarSign size={48} className="text-muted" /></div>No recovery loans yet.</div> : (
             <div className="table-wrap">
               <table>
                 <thead><tr><th>Admin</th><th>Disbursed</th><th>Overdue</th><th>Repaid</th><th>Total</th><th>Portfolio</th><th>Recovered</th><th>Rate</th></tr></thead>

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Sidebar from '@/components/Sidebar';
 import api from '@/services/api';
+import { Inbox } from 'lucide-react';
 
 const ALL_STATUSES = ['all','pending','approved','rejected','on_hold','disbursed','overdue','repaid'];
 const LABELS = { all:'All', pending:'Pending', approved:'Approved', rejected:'Rejected', on_hold:'On Hold', disbursed:'Disbursed', overdue:'Overdue', repaid:'Repaid' };
@@ -58,7 +59,7 @@ export default function LoansPage() {
           {loading ? (
             <div className="empty-state"><span className="spinner" style={{width:32,height:32}} /></div>
           ) : loans.length === 0 ? (
-            <div className="empty-state"><div className="empty-icon">📭</div>No loans for <strong>{LABELS[status]}</strong></div>
+            <div className="empty-state"><div className="empty-icon"><Inbox size={48} color="var(--text-muted)" /></div>No loans for <strong>{LABELS[status]}</strong></div>
           ) : (
             <div className="table-wrap">
               <table>

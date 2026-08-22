@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/services/api';
+import { Briefcase } from 'lucide-react';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -27,7 +28,7 @@ export default function LoginPage() {
     <div className="login-page">
       <div className="login-card">
         <div className="login-logo">
-          <div className="logo-icon">💼</div>
+          <div className="logo-icon"><Briefcase size={40} className="text-primary" /></div>
           <h1>Mini Lending Ops</h1>
           <p>Admin Operations Panel</p>
         </div>
