@@ -79,22 +79,18 @@ const approveLoan = async (req, res) => {
       meta: { comment: comment || null },
     });
 
-    // Send email — NEVER fail the decision if email fails
-    let emailSent = false;
-    try {
-      const result = await sendDecisionEmail({
-        borrowerEmail: loan.borrowerId.email,
-        borrowerName: loan.borrowerId.name,
-        loanAmount: loan.amount,
-        status: 'approved',
-        comment: comment || '',
-      });
-      emailSent = result.sent;
-    } catch (emailErr) {
-      console.error('[EMAIL] Failed to send approval email:', emailErr.message);
-    }
+    // Send email asynchronously in the background so it doesn't block the HTTP response
+    sendDecisionEmail({
+      borrowerEmail: loan.borrowerId.email,
+      borrowerName: loan.borrowerId.name,
+      loanAmount: loan.amount,
+      status: 'approved',
+      comment: comment || '',
+    }).catch(emailErr => {
+      console.error('[EMAIL] Background sending failed:', emailErr.message);
+    });
 
-    return res.json({ success: true, emailSent, loan });
+    return res.json({ success: true, emailSent: 'pending_background', loan });
   } catch (err) {
     console.error('[LOANS] approveLoan error:', err.message);
     return res.status(500).json({ error: 'Failed to approve loan.' });
@@ -141,21 +137,18 @@ const rejectLoan = async (req, res) => {
     });
 
     // Send email — never fail the decision
-    let emailSent = false;
-    try {
-      const result = await sendDecisionEmail({
-        borrowerEmail: loan.borrowerId.email,
-        borrowerName: loan.borrowerId.name,
-        loanAmount: loan.amount,
-        status: 'rejected',
-        comment,
-      });
-      emailSent = result.sent;
-    } catch (emailErr) {
-      console.error('[EMAIL] Failed to send rejection email:', emailErr.message);
-    }
+    // Send email asynchronously in the background so it doesn't block the HTTP response
+    sendDecisionEmail({
+      borrowerEmail: loan.borrowerId.email,
+      borrowerName: loan.borrowerId.name,
+      loanAmount: loan.amount,
+      status: 'rejected',
+      comment,
+    }).catch(emailErr => {
+      console.error('[EMAIL] Background sending failed:', emailErr.message);
+    });
 
-    return res.json({ success: true, emailSent, loan });
+    return res.json({ success: true, emailSent: 'pending_background', loan });
   } catch (err) {
     console.error('[LOANS] rejectLoan error:', err.message);
     return res.status(500).json({ error: 'Failed to reject loan.' });
