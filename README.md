@@ -1,16 +1,18 @@
 # Mini Lending Operations Admin Panel
 
-A small admin lending operations panel built with **Node.js + Express + MongoDB + React (Vite) + JWT**.
+This repository contains a fully functional administrative panel designed for lending operations. It is built using a modern technology stack including Node.js, Express, MongoDB for the backend, and React (Vite) with JWT-based authentication for the frontend.
 
-> ⚠️ This is a training project. No real CIBIL, Cashfree, or DigiLocker services are integrated.
+Please note that this is a training project. No real financial services (such as CIBIL, Cashfree, or DigiLocker) have been integrated into this application.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
+
+The repository is divided into two main directories:
 
 ```
 mini-lending-ops/
-├── backend/         # Express + MongoDB API
+├── backend/         # Express and MongoDB API
 │   └── src/
 │       ├── models/
 │       ├── routes/
@@ -18,7 +20,7 @@ mini-lending-ops/
 │       ├── controllers/
 │       ├── services/
 │       └── server.js
-├── frontend/        # React (Vite)
+├── frontend/        # React Application (built with Vite)
 │   └── src/
 │       ├── pages/
 │       ├── components/
@@ -30,9 +32,13 @@ mini-lending-ops/
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
+
+Follow these steps to get the application running on your local machine.
 
 ### 1. Clone the repository
+
+Begin by cloning the repository to your local machine and navigating into the project directory:
 
 ```bash
 git clone https://github.com/rachit1234567547/Mini-lending-ops.git
@@ -40,6 +46,8 @@ cd Mini-lending-ops
 ```
 
 ### 2. Install dependencies
+
+You will need to install the Node packages for both the frontend and the backend separately.
 
 ```bash
 # Install backend dependencies
@@ -51,59 +59,70 @@ cd ../frontend && npm install
 
 ### 3. Configure environment variables
 
+Navigate to the backend directory and create your environment configuration file:
+
 ```bash
-cp .env.example backend/.env
+cd backend
+cp .env.example .env
 ```
 
-Edit `backend/.env` and fill in your values (see Environment Variables section below).
+Open the newly created `.env` file and populate it with your specific configuration values (refer to the Environment Variables section below).
 
 ### 4. Seed the database
 
+Populate your database with the initial testing data required to run the application:
+
 ```bash
-cd backend && npm run seed
+npm run seed
 ```
 
-The seed script will print admin credentials to the console.
+Upon completion, this script will output the initial administrator credentials directly to your console. Save these credentials to log into the application.
 
 ### 5. Run the application
 
-```bash
-# Start backend (in one terminal)
-cd backend && npm run dev
+You will need to run the backend and the frontend simultaneously in separate terminal windows.
 
-# Start frontend (in another terminal)
-cd frontend && npm run dev
+```bash
+# Start the backend server (Terminal 1)
+cd backend
+npm run dev
+
+# Start the frontend application (Terminal 2)
+cd frontend
+npm run dev
 ```
 
-- Backend: http://localhost:5000  
-- Frontend: http://localhost:5173
+- The backend API will be available at: http://localhost:5000  
+- The frontend UI will be available at: http://localhost:5173
 
 ---
 
-## 🔑 Environment Variables
+## Environment Variables
 
-Create a `backend/.env` file using `.env.example` as a template:
+Your `backend/.env` file should contain the following variables:
 
 | Variable | Description |
 |---|---|
-| `MONGODB_URI` | MongoDB connection string |
-| `JWT_SECRET` | Secret key for signing JWTs (use a long random string) |
-| `EMAIL_API_KEY` | API key for Resend email service |
-| `EMAIL_FROM` | Verified sender email address |
-| `PORT` | Backend server port (default: 5000) |
-| `CLIENT_URL` | Frontend URL for CORS (default: http://localhost:5173) |
+| MONGODB_URI | Your MongoDB connection string |
+| JWT_SECRET | A secure, random string used for signing authentication tokens |
+| EMAIL_API_KEY | Your API key for the Resend email service |
+| EMAIL_FROM | The verified sender email address associated with your Resend account |
+| PORT | The port for the backend server (default is 5000) |
+| CLIENT_URL | The URL of your frontend application to allow CORS (default is http://localhost:5173) |
 
-> ⚠️ Never put real values in this README or commit your `.env` file.
-
----
-
-## 👤 Seed Credentials
-
-After running `npm run seed`, credentials will be printed to the console.
+Important Security Note: Never commit your `.env` file to version control, and do not place real production keys inside this README file.
 
 ---
 
-## 🔄 Loan Status Lifecycle
+## Seed Credentials
+
+After executing the database seed script, the terminal will display the generated login credentials for the default administrator accounts. Use these credentials to access the application.
+
+---
+
+## Loan Status Lifecycle
+
+The system enforces a strict lifecycle for all loans. The flow is as follows:
 
 ```
 pending
@@ -125,107 +144,113 @@ pending
 
 ---
 
-## 🔐 Permission Matrix
+## Permission Matrix
 
-| Permission | Main Admin | Credit | Collection |
+Access control is strictly enforced based on the assigned role of the administrator.
+
+| Permission | Main Admin | Credit Officer | Collection Agent |
 |---|:---:|:---:|:---:|
-| VIEW_LOANS | ✓ | ✓ | ✓ |
-| DECIDE_LOANS | ✓ | ✓ | — |
-| RECORD_REPAYMENT | ✓ | — | ✓ |
-| MANAGE_PTP | ✓ | — | ✓ |
-| VIEW_REPORTS | ✓ | ✓ | ✓ |
+| VIEW_LOANS | Yes | Yes | Yes |
+| DECIDE_LOANS | Yes | Yes | No |
+| RECORD_REPAYMENT | Yes | No | Yes |
+| MANAGE_PTP | Yes | No | Yes |
+| VIEW_REPORTS | Yes | Yes | Yes |
 
 ---
 
-## 📊 Reports Explained
+## Reports Explained
 
-**Decision Performance** counts unique loans an admin has approved or rejected, regardless of whether those loans were later disbursed.
+The application features two distinct performance reports to track operational efficiency:
 
-**Recovery** measures loans that have actually reached the disbursed/recovery lifecycle, so approved-but-not-disbursed loans are excluded.
+**Decision Performance:** This report calculates the number of unique loans that an administrator has explicitly approved or rejected. It counts these decisions regardless of whether the loan ultimately progressed to the disbursement stage.
+
+**Recovery:** This report focuses entirely on the collection phase. It exclusively measures loans that have entered the disbursed or recovery lifecycle. Loans that were approved but never disbursed are omitted from this calculation.
 
 ---
 
-## ✅ Testing Journey
+## Testing Journey
 
-### Journey A — Auth & Permissions
-- [x] **A1:** Login using credit admin succeeds, JWT stored, redirects to loans.
-- [x] **A2:** Login with wrong password shows clear error, no token stored.
-- [x] **A3:** Call `GET /admin/reports/decision-performance` without JWT returns `401`.
-- [x] **A4:** Login as collection admin (no `DECIDE_LOANS`). Approve/Reject actions hidden, backend returns `403` if manually called.
-- [x] **A5:** Login as mainadmin/credit (has `DECIDE_LOANS`). Actions visible.
+The following checklist represents the complete testing journey required to validate the application. 
+
+### Journey A — Auth and Permissions
+- [x] A1: Login using credit admin succeeds, JWT stored, redirects to loans.
+- [x] A2: Login with wrong password shows clear error, no token stored.
+- [x] A3: Call GET /admin/reports/decision-performance without JWT returns 401 Unauthorized.
+- [x] A4: Login as collection admin (lacks DECIDE_LOANS permission). Approve/Reject actions hidden, backend returns 403 if manually called.
+- [x] A5: Login as main admin or credit officer (has DECIDE_LOANS permission). Decision actions are visible.
 
 ### Journey B — IFSC Third Party
-- [x] **B1:** Open borrower without bank details. Form is empty.
-- [x] **B2:** Enter valid IFSC (`HDFC0000001`) + Account Last 4. Click Verify. Bank Name, Branch, City appear. Data saved to MongoDB.
-- [x] **B3:** Enter invalid IFSC (`XXXX0000000`). API returns `400`. Clear UI error displayed. No partial bank data saved.
-- [x] **B4:** Network tab shows request goes to Express API, Express calls Razorpay (Browser does not call Razorpay directly).
+- [x] B1: Open borrower without bank details. The input form is empty.
+- [x] B2: Enter valid IFSC (e.g., HDFC0000001) and Account Last 4. Click Verify. Bank Name, Branch, and City are fetched and saved to MongoDB.
+- [x] B3: Enter invalid IFSC (e.g., XXXX0000000). API returns 400. Clear UI error displayed. No partial bank data saved.
+- [x] B4: Network tab confirms the request goes to the Express API, which securely calls Razorpay. The browser does not call Razorpay directly.
 
 ### Journey C — Happy Path Loan Lifecycle
-- [x] **C1:** Open pending loan. Status is pending, decision info is empty.
-- [x] **C2:** Click Hold, add comment. Status becomes `on_hold`. ActivityLog contains `loan_held`.
-- [x] **C3:** Approve loan. Add comment. Status becomes `approved`. `decisionBy`, `decisionByEmail`, `decisionAt` populated. ActivityLog contains `loan_approved`.
-- [x] **C4:** Check email provider (Resend). Decision email is received, or API returns `emailSent: true`.
-- [x] **C5:** Disburse loan. Status becomes `disbursed`. `disbursedAt` is populated.
-- [x] **C6:** Filter loans by disbursed. Loan appears. Last decision shows admin details.
+- [x] C1: Open a pending loan. The status is pending, and decision information is empty.
+- [x] C2: Click Hold, add a comment. The status becomes on_hold. The Activity Log records a loan_held event.
+- [x] C3: Approve the loan and add a comment. The status becomes approved. The decision maker and timestamp are recorded. The Activity Log records a loan_approved event.
+- [x] C4: Check the email provider (Resend). A decision email is successfully delivered.
+- [x] C5: Disburse the loan. The status becomes disbursed, and the disbursement date is populated.
+- [x] C6: Filter loans by the disbursed status. The newly disbursed loan appears correctly in the list.
 
-### Journey D — Double Submit / Atomic Decision
-- [x] **D1:** Select fresh pending loan.
-- [x] **D2:** Double-click Approve (send parallel requests). Request 1 → SUCCESS. Request 2 → ERROR. Loan is not approved twice.
-- [x] **D3:** Exactly one `loan_approved` entry in ActivityLog.
-- [x] **D4:** Decision Performance approved unique count increases by exactly 1.
+### Journey D — Double Submit and Atomic Decisions
+- [x] D1: Select a fresh pending loan.
+- [x] D2: Attempt a double-click on Approve (simulating parallel requests). Request 1 returns SUCCESS. Request 2 returns an ERROR. The loan is not approved twice.
+- [x] D3: Exactly one loan_approved entry exists in the Activity Log.
+- [x] D4: The Decision Performance approved unique count increases by exactly 1.
 
 ### Journey E — Email Failure
-- [x] **E1:** Temporarily break email config (invalid API key).
-- [x] **E2:** Approve a pending loan. Loan becomes approved (decision succeeds). API returns `emailSent: false`. Server logs the error.
-- [x] **E3:** Restore email config. Reject another loan. Email works again.
+- [x] E1: Temporarily break the email configuration by providing an invalid API key.
+- [x] E2: Approve a pending loan. The loan is approved, but the API indicates the email was not sent. The server logs the failure. The loan decision is not rolled back.
+- [x] E3: Restore the valid email configuration. Reject another loan. The email delivery functions correctly again.
 
-### Journey F — Repayment + PTP
-- [x] **F1:** Create PTP (Promised = tomorrow, Amount = ₹5,000, Status = open).
-- [x] **F2:** Record SUCCESS repayment (₹5,000). Repaid amount updates. PTP becomes `kept`. Loan remains `disbursed`.
-- [x] **F3:** On another loan: Create PTP (Promised = yesterday). Record SUCCESS repayment today. PTP becomes `broken`.
-- [x] **F4:** Repay remaining amount. `repaidAmount >= loan.amount`. Loan becomes `repaid`.
-- [x] **F5:** Add FAILED repayment. Loan total unchanged. PTP unchanged.
+### Journey F — Repayment and Promise-to-Pay (PTP)
+- [x] F1: Create a Promise-to-Pay for tomorrow with an open status.
+- [x] F2: Record a successful repayment. The repaid amount updates, the PTP becomes kept, and the loan remains in the disbursed status.
+- [x] F3: On another loan, create a PTP promised for yesterday. Record a successful repayment today. The PTP is automatically marked as broken.
+- [x] F4: Repay the remaining total balance of the loan. The loan status automatically changes to repaid.
+- [x] F5: Add a FAILED repayment. The total loan balance remains unchanged, and the active PTP status is unaffected.
 
 ### Journey G — Reject Path
-- [x] **G1:** Reject pending loan with comment. Status becomes `rejected`. Email sent. ActivityLog contains `loan_rejected`.
-- [x] **G2:** Try to disburse rejected loan. Action is blocked (UI hidden and API returns `400`).
+- [x] G1: Reject a pending loan with a comment. The status becomes rejected, an email is sent, and the Activity Log records a loan_rejected event.
+- [x] G2: Attempt to disburse the rejected loan. The action is blocked, and the API returns a 400 Bad Request error.
 
 ### Journey H — Reports
-- [x] **H1:** Open Decision Performance. Verify counts match unique loans decided. Double clicks do not increase count twice.
-- [x] **H2:** Open Recovery. Confirm only `disbursed`, `overdue`, `repaid` are counted.
-- [x] **H3:** Approve new loan but DO NOT disburse it. Performance approved count increases. Recovery count remains unchanged.
-- [x] **H4:** Both report pages contain a one-sentence explanation of their difference.
+- [x] H1: Open the Decision Performance report. The counts accurately reflect the unique loans decided.
+- [x] H2: Open the Recovery report. Confirm that only disbursed, overdue, and repaid loans are included in the metric.
+- [x] H3: Approve a new loan but do not disburse it. The Performance approved count increases, while the Recovery count remains completely unchanged.
+- [x] H4: Both report pages prominently feature a one-sentence explanation clarifying their difference.
 
 ### Journey I — Regression Smoke Test
-- [x] **I1:** Logout and Login again. Session works.
-- [x] **I2:** Refresh loan detail page. Data remains consistent with MongoDB.
-- [x] **I3:** Confirm `.env` is not committed. `.env.example` exists. Git status contains no secrets.
-- [x] **I4:** Clone repo into fresh directory. Follow README. Seed. Start. Login. Setup takes < 15 mins.
+- [x] I1: Logout and Login again. Session persistence functions normally.
+- [x] I2: Refresh the loan detail page. The data remains consistent with the MongoDB records.
+- [x] I3: Confirm that the `.env` file is excluded from version control, the `.env.example` exists, and there are no exposed secrets in the Git history.
+- [x] I4: Clone the repository into a fresh directory, follow these instructions, seed the data, and start the application. The entire setup process takes less than 15 minutes.
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
-*(Add your images to the repository and update these markdown links before submission)*
+(Please add your screenshots to the repository and update these markdown links before final submission.)
 
-1. **IFSC Successful Verification**
+1. IFSC Successful Verification
    ![IFSC Success](./screenshots/ifsc-success.png)
 
-2. **IFSC Failure**
+2. IFSC Failure
    ![IFSC Failure](./screenshots/ifsc-failure.png)
 
-3. **Decision Email**
+3. Decision Email
    ![Decision Email](./screenshots/decision-email.png)
 
-4. **Performance Report**
+4. Performance Report
    ![Performance Report](./screenshots/performance-report.png)
 
-5. **Recovery Report**
+5. Recovery Report
    ![Recovery Report](./screenshots/recovery-report.png)
 
 ---
 
-## 🚀 Third-Party Integrations
+## Third-Party Integrations
 
-1. **Razorpay IFSC Lookup** — Bank IFSC verification via `https://ifsc.razorpay.com/{IFSC}`
-2. **Resend** — Transactional email on loan decisions
+1. Razorpay IFSC Lookup: Server-side Bank IFSC verification via `https://ifsc.razorpay.com/{IFSC}`
+2. Resend: Transactional email delivery for loan decision notifications
