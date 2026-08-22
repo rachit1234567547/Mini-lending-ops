@@ -29,11 +29,11 @@ const ADMINS = [
 ];
 
 const BORROWERS = [
-  // Borrower 1 — has bank details + accessible email (use your real email here for testing)
+  // Borrower 1 — Testing email 1
   {
     name: 'Ananya Sharma',
     phone: '9876543210',
-    email: 'ananya.sharma@gmail.com',
+    email: 'vikashkr62042@gmail.com',
     kycStatus: 'verified',
     bank: {
       ifsc: 'HDFC0000001',
@@ -43,19 +43,19 @@ const BORROWERS = [
       city: 'New Delhi',
     },
   },
-  // Borrower 2 — NO bank details (required by spec)
+  // Borrower 2 — Testing email 2
   {
     name: 'Rahul Mehta',
     phone: '9123456780',
-    email: 'vikashkr62042@gmail.com',
+    email: 'naturemother101@gmail.com',
     kycStatus: 'pending',
     bank: { ifsc: null, accountLast4: null, bankName: null, branch: null, city: null },
   },
-  // Borrower 3
+  // Borrower 3 — Testing email 3
   {
     name: 'Priya Nair',
     phone: '9988776655',
-    email: 'naturemother101@gmail.com',
+    email: 'lpucolab438@gmail.com',
     kycStatus: 'verified',
     bank: {
       ifsc: 'SBIN0001234',
@@ -65,11 +65,11 @@ const BORROWERS = [
       city: 'Bengaluru',
     },
   },
-  // Borrower 4
+  // Borrower 4 — Fake email
   {
     name: 'Kiran Desai',
     phone: '9011223344',
-    email: 'lpucolab438@gmail.com',
+    email: 'kiran.desai@example.com',
     kycStatus: 'verified',
     bank: {
       ifsc: 'ICIC0002345',
@@ -79,7 +79,7 @@ const BORROWERS = [
       city: 'Mumbai',
     },
   },
-  // Borrower 5 — NO bank details
+  // Borrower 5 — Fake email
   {
     name: 'Deepak Joshi',
     phone: '9765432100',
@@ -87,7 +87,7 @@ const BORROWERS = [
     kycStatus: 'pending',
     bank: { ifsc: null, accountLast4: null, bankName: null, branch: null, city: null },
   },
-  // Borrower 6
+  // Borrower 6 — Fake email
   {
     name: 'Sneha Pillai',
     phone: '9543216780',
@@ -101,7 +101,7 @@ const BORROWERS = [
       city: 'Bengaluru',
     },
   },
-  // Borrower 7
+  // Borrower 7 — Fake email
   {
     name: 'Vijay Kumar',
     phone: '9321654987',
@@ -115,7 +115,7 @@ const BORROWERS = [
       city: 'New Delhi',
     },
   },
-  // Borrower 8
+  // Borrower 8 — Fake email
   {
     name: 'Meera Iyer',
     phone: '9012345678',
@@ -146,16 +146,9 @@ async function seed() {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('✅ Connected to MongoDB\n');
 
-    // Clear existing data
-    await Promise.all([
-      Admin.deleteMany({}),
-      Borrower.deleteMany({}),
-      Loan.deleteMany({}),
-      Repayment.deleteMany({}),
-      PTP.deleteMany({}),
-      ActivityLog.deleteMany({}),
-    ]);
-    console.log('🗑️  Cleared existing data\n');
+    // Drop the entire database to clear old data and indexes (so unique constraints apply)
+    await mongoose.connection.dropDatabase();
+    console.log('🗑️  Dropped database to clear data and indexes\n');
 
     // ── Seed Admins ──────────────────────────────────────────────────────────
     const createdAdmins = [];
@@ -188,28 +181,28 @@ async function seed() {
 
     // 1. PENDING — required by spec
     loans.push(await Loan.create({
-      borrowerId: createdBorrowers[1]._id,  // Rahul — no bank details
+      borrowerId: createdBorrowers[1]._id,  // Testing Email 2
       amount: 15000,
       status: 'pending',
     }));
 
     // 2. PENDING
     loans.push(await Loan.create({
-      borrowerId: createdBorrowers[2]._id,
+      borrowerId: createdBorrowers[2]._id,  // Testing Email 3
       amount: 25000,
       status: 'pending',
     }));
 
     // 3. PENDING
     loans.push(await Loan.create({
-      borrowerId: createdBorrowers[4]._id,
+      borrowerId: createdBorrowers[0]._id,  // Testing Email 1
       amount: 10000,
       status: 'pending',
     }));
 
     // 4. ON_HOLD — held by credit admin
     const heldLoan = await Loan.create({
-      borrowerId: createdBorrowers[3]._id,
+      borrowerId: createdBorrowers[0]._id,  // Testing Email 1
       amount: 50000,
       status: 'on_hold',
       decisionBy: creditAdmin.name,
@@ -263,7 +256,7 @@ async function seed() {
 
     // 7. DISBURSED — use for repayment + PTP testing
     const disbursedLoan = await Loan.create({
-      borrowerId: createdBorrowers[0]._id,  // Ananya — has bank details
+      borrowerId: createdBorrowers[3]._id,  // Fake email with bank details
       amount: 10000,
       status: 'disbursed',
       decisionBy: creditAdmin.name,
@@ -289,7 +282,7 @@ async function seed() {
 
     // 8. DISBURSED — another one for testing reports
     const disbursedLoan2 = await Loan.create({
-      borrowerId: createdBorrowers[2]._id,
+      borrowerId: createdBorrowers[5]._id, // Fake email with bank details
       amount: 40000,
       status: 'disbursed',
       decisionBy: mainAdmin.name,
